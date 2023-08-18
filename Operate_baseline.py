@@ -1,6 +1,7 @@
 
 from data_preparing import *
 from pairwise import *
+from jackknife import *
 
 
 g_posi="all"
@@ -12,7 +13,7 @@ N_jk=100
 ap_the=30
 gv="DR8"
 
-filename="Equation_M_A_"+gv+"_"+g_posi+"_"+cmbtype+"_"+range_method+"_ap"+str(ap_the)+"_Model"+model+"_a"+str(alpha)+"_dd"+str(dd)+"_Njk"+str(N_jk)+".npz"
+filename="Equation_M_A_"+gv+"_"+g_posi+"_"+cmbtype+"_"+range_method+"_ap"+str(ap_the)+"_a"+str(alpha)+"_dd"+str(dd)+"_Njk"+str(N_jk)+".npz"
 
 if g_posi=="all":
 	Ngr=[];rar=[]; decr=[]; zphr=[]; lgMr=[]; T_gr=[]
@@ -37,14 +38,14 @@ else:
 
 #cut the sky
 the_gal,phi_gal=radec2thephi(ra,dec)
-label_array,label_array_temp=resample_jackknife((phi_gal-0.35)%(2*np.pi),the_gal,N_bin,N_bin:1)
+label_array,label_array_temp=resample_jackknife((phi_gal-0.35)%(2*np.pi),the_gal,N_bin,N_bin1)
 del label_array_temp
 
 #pairwise for each jackknife sample
-Equation_M = np.zeros(( 4, 4, N_bin))
-Equation_A = np.zeros(( 4, N_bin))
+Equation_M = np.zeros(( 4, 4,len(np.arange(dd//2,300,dd)), N_bin))
+Equation_A = np.zeros(( 4,len(np.arange(dd//2,300,dd)), N_bin))
 delta_redshift= np.zeros(( len(np.arange(dd//2,300,dd)), N_bin))
 for i in tqdm(range(N_bin)):
-    Equation_M[:,:,i], Equation_A[:,i], delta_redshift[:,i] = pairwise_calculate(dec_rad=dec[label_array[i]], ra_rad=ra[label_array[i]], redshift=zph[label_array[i]], T_ap=T_g[label_array[i]], lgM=lgM[label_array[i]], alpha=alpha, dd=dd)
+    Equation_M[:,:,:,i], Equation_A[:,:,i], delta_redshift[:,i] = pairwise_calculate(dec_rad=dec[label_array[i]], ra_rad=ra[label_array[i]], redshift=zph[label_array[i]], T_ap=T_g[label_array[i]], lgM=lgM[label_array[i]], alpha=alpha, dd=dd)
 
 np.savez(filename, Equation_M=Equation_M, Equation_A=Equation_A, delta_redshift=delta_redshift) 
