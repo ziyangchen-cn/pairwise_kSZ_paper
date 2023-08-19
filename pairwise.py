@@ -54,8 +54,9 @@ def pairwise_calculate(dec_rad, ra_rad, redshift, T_ap, lgM, alpha, dd):
 
 	N_pair = np.zeros(300//dd)
 
-	@jit
-	def pairwise_for():
+	#T_ap, coor_x, coor_y, coor_z, cosDec, cosRa, sinDec, sinRa, M, d_coming, redshift, 
+	@jit(nopython=True)
+	def pairwise_for(Cij, Cij2, Zij, Zij2, Zij3, Zij4, CijZij, CijZij2, Tij, TijCij, TijZij, TijZij2, N_pair):
 		for i in (range(len(T_ap))):
 			for j in range(i+1,len(T_ap)):
 				r=np.sqrt((coor_x[i]-coor_x[j])**2+(coor_y[i]-coor_y[j])**2+(coor_z[i]-coor_z[j])**2)
@@ -87,7 +88,10 @@ def pairwise_calculate(dec_rad, ra_rad, redshift, T_ap, lgM, alpha, dd):
 
 				N_pair[label_r]+=1
 
+		print(r, N_pair)
 
+	pairwise_for(Cij, Cij2, Zij, Zij2, Zij3, Zij4, CijZij, CijZij2, Tij, TijCij, TijZij, TijZij2, N_pair)
+	print(N_pair)
 	Equation_M = np.zeros((4,4, len(N_pair)))
 	Equation_A = np.zeros((4, len(N_pair)))
 	Equation_M[ 0, 0, :] = Cij2/N_pair

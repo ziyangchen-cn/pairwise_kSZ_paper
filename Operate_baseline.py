@@ -4,7 +4,7 @@ from pairwise import *
 from jackknife import *
 
 
-g_posi="all"
+g_posi="NGC"
 cmbtype="217"
 alpha=1
 range_method="N"
@@ -33,7 +33,7 @@ if g_posi=="all":
 	T_g=np.hstack(T_gr)
 	N_bin=N_jk*2; N_bin1=int(np.sqrt(N_jk)+0.1)
 else:
-	Ng, ra, dec, zph, lgM, T_g = Data_pre_processing(g_posi=g_posi,cmbtype=cmbtype,range_method=range_method,ap_the=ap_the/10.0,the=the,M=M)
+	Ng, ra, dec, zph, lgM, T_g = Data_pre_processing(gv=gv,g_posi=g_posi,cmbtype=cmbtype,range_method=range_method,ap_the=ap_the/10.0)
 	N_bin=N_jk; N_bin1=int(np.sqrt(N_jk)+0.1)
 
 #cut the sky
