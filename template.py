@@ -10,10 +10,8 @@ from scipy.spatial import KDTree
 import numpy as np
 import matplotlib.pyplot as plt
 
-from numba import jit
-
-from readdata import *
-from funcs import *
+#from readdata import *
+#from funcs import *
 
 #dir
 picdir="/home/chenzy/pic/"
@@ -22,17 +20,8 @@ datadir="/home/chenzy/code/SZ_planck_DESI/pairwise_ksz/data/"
 
 #========================= template ==============================
 
-def fit_para(s_t,s_m,C_):
-	mean=chi_square(s_m,s_t,C_)/chi_square(s_t,s_t,C_)
-	sigma=np.sqrt(1/chi_square(s_t,s_t,C_))
-	'''
-	tou_r=np.linspace(tou_mean-4*tou_sigma,tou_mean+4*tou_sigma,50)
-	chi2_r=np.zeros(len(tou_r))
-	for i in range(len(tou_r)):
-		chi2_r[i]=chi_square((s_m-tou_r[i]*s_t),C_)
-	return tou_mean,tou_sigma,tou_r,chi2_r
-	'''
-	return mean,sigma
+
+
 
 
 def theory_pairwise(z=0.4,b=3.68,sigmaz=0.01,figplot=0):
@@ -268,7 +257,7 @@ def get_emulator_pairwise_velocity(r,zs,bs):
 	#V12_zph=d["V_p_zph"]
 	#z=d["z"]
 	#bias=d["b"]
-	d=np.load(datadir+"emulator_pairwise.npz")
+	d=np.load("emulator_pairwise.npz")
 	a=d["a"];b=d["b"];rp=d["rp"];vp=d["vp"];z=d["z"];bias=d["bias"]
 
 	zl=np.argmin(np.abs(z[:,0]-zs))
@@ -284,7 +273,7 @@ def get_emulator_pairwise_velocity(r,zs,bs):
 	return get_V_p_zph_temp(r, a[zl,bl], b[zl,bl], rp[zl,bl], vp[zl,bl])
 
 def get_emulator_pairwise_velocity_nophotoz(r,zs,bs):
-	d=np.load(datadir+"simu_pksz_theory.npz")
+	d=np.load("simu_pksz_theory.npz")
 	V12=d["V_p"]
 	V12_zph=d["V_p_zph"]
 	z=d["z"]
