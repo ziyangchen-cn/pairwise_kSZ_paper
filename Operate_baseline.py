@@ -51,4 +51,4 @@ mass_weight = np.zeros((len(np.arange(dd//2,300,dd)), N_bin))
 for i in tqdm(range(N_bin)):
     Equation_M[:,:,:,i], Equation_A[:,:,i], delta_redshift[:,i], mass_weight[:,i] = pairwise_calculate(dec_rad=dec[label_array[i]], ra_rad=ra[label_array[i]], redshift=zph[label_array[i]], T_ap=T_g[label_array[i]], lgM=lgM[label_array[i]], alpha=alpha, dd=dd)
 
-np.savez(filename, Equation_M=Equation_M, Equation_A=Equation_A, delta_redshift=delta_redshift, z_mean = z_mean, M_mean = M_mean) 
+np.savez(filename, Equation_M=Equation_M, Equation_A=Equation_A, delta_redshift=delta_redshift,mass_weight=mass_weight, z_mean = z_mean, M_mean = M_mean) 
