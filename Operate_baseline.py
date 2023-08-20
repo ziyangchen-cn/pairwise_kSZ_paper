@@ -35,6 +35,8 @@ if g_posi=="all":
 else:
 	Ng, ra, dec, zph, lgM, T_g = Data_pre_processing(gv=gv,g_posi=g_posi,cmbtype=cmbtype,range_method=range_method,ap_the=ap_the/10.0)
 	N_bin=N_jk; N_bin1=int(np.sqrt(N_jk)+0.1)
+z_mean = np.mean(zph)
+M_mean = np.mean(10**lgM)
 
 #cut the sky
 the_gal,phi_gal=radec2thephi(ra,dec)
@@ -48,4 +50,4 @@ delta_redshift= np.zeros(( len(np.arange(dd//2,300,dd)), N_bin))
 for i in tqdm(range(N_bin)):
     Equation_M[:,:,:,i], Equation_A[:,:,i], delta_redshift[:,i] = pairwise_calculate(dec_rad=dec[label_array[i]], ra_rad=ra[label_array[i]], redshift=zph[label_array[i]], T_ap=T_g[label_array[i]], lgM=lgM[label_array[i]], alpha=alpha, dd=dd)
 
-np.savez(filename, Equation_M=Equation_M, Equation_A=Equation_A, delta_redshift=delta_redshift) 
+np.savez(filename, Equation_M=Equation_M, Equation_A=Equation_A, delta_redshift=delta_redshift, z_mean = z_mean, M_mean = M_mean) 
