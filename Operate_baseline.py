@@ -4,7 +4,7 @@ from pairwise import *
 from jackknife import *
 
 
-g_posi="NGC"
+g_posi="SGC"
 cmbtype="217"
 alpha=1
 range_method="N"
